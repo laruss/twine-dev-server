@@ -125,6 +125,8 @@ const createPassages: CreatePassages = async () => {
         const pidAsInt = Number(passage.pid || 0);
         return pidAsInt > acc ? pidAsInt : acc;
     }, 0);
+    console.log("*** Biggest not-generated pid:", biggestPid, "***\n");
+
     const allPositions: [number, number][] = [];
     passagesObjects.forEach((psg) => {
         if (psg.position) {
