@@ -148,6 +148,40 @@ _project.json
 - To rename a passage, simply rename the file (I am suggesting to use refactoring tools of your IDE to avoid breaking
   references in other passages or scripts).
 
+### Valid passage examples:
+
+File `src/story/hello.md`:
+
+```markdown
+====================
+pid: 7
+====================
+I am a new node named hello
+<<script>>
+console.log('from hello', State.variables);
+<</script>>
+```
+
+File `src/story/some_folder/some_passage.md`:
+
+```markdown
+Hello from `some_passage` in `some_folder`
+```
+
+File `src/story/some_folder/some_other_passage.md`:
+
+```markdown
+====================
+name: test
+pid: 1
+tags: 
+position: 725,375
+size: 100,100
+====================
+This passage has been made in Twine, now it's in markdown
+You can remove all data from the top of the file if you want, it will still work
+```
+
 ### Scripts and Styles
 
 - Scripts and styles can be split across multiple files.

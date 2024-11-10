@@ -2,6 +2,7 @@ import * as jsdom from 'jsdom';
 import * as path from 'node:path';
 import { configs } from 'src/lib/scripts/configs.ts';
 import type {
+    CompilePassagesInfoType,
     OptionalPassageType,
     ProjectInfoType,
     TagType,
@@ -98,7 +99,9 @@ async function createScripts() {
     return element;
 }
 
-async function createPassages() {
+type CreatePassages = () => Promise<[HTMLElement[], CompilePassagesInfoType]>;
+
+const createPassages: CreatePassages = async () => {
     const encodeHtmlEntities = (text: string) => {
         const divEl = document.createElement('div');
         divEl.textContent = text;
@@ -136,19 +139,24 @@ async function createPassages() {
         }
     });
 
-    return passagesObjects.map((psg) => {
-        const { content, ...passageProps } = fillInPassageInfo(psg, {
-            allPositions,
-            biggestPid,
-        });
-        const elem = createElementWithAttributes(
-            'tw-passagedata',
-            passageProps
-        );
-        elem.innerHTML = encodeHtmlEntities(content);
+    const compileInfo = {
+        allPositions,
+        biggestPid,
+    };
 
-        return elem;
-    });
+    return [
+        passagesObjects.map((psg) => {
+            const { content, ...passageProps } = fillInPassageInfo(psg, compileInfo);
+            const elem = createElementWithAttributes(
+                'tw-passagedata',
+                passageProps
+            );
+            elem.innerHTML = encodeHtmlEntities(content);
+
+            return elem;
+        }),
+        compileInfo,
+    ];
 }
 
 async function appendStoryDataToHtmlAndSave(storyDataInDiv: HTMLDivElement) {
@@ -177,13 +185,17 @@ export async function compile() {
     const tagElements = createTags(tags);
     tagElements.forEach((el) => storyDataElement.appendChild(el));
 
-    const passages = await createPassages();
+    const [passages, compileInfo] = await createPassages();
     passages.forEach((psg) => storyDataElement.appendChild(psg));
 
     divElement.appendChild(storyDataElement);
 
     await appendStoryDataToHtmlAndSave(divElement);
+
     console.log('Story compiled successfully');
+    console.log('\n', configs.passageFormat.metaDelimiter);
+    console.log(' Next available pid:', compileInfo.biggestPid + 1);
+    console.log(configs.passageFormat.metaDelimiter);
 }
 
 await compile();
