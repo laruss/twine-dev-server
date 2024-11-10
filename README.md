@@ -91,6 +91,9 @@ bun run decompile `/path/to/your/project_folder`
 
 This will create `static` and `story` subdirectories in your `src` directory.
 
+**WARNING:** If you have just an html file, you should put it in empty folder as script will copy all files and folders
+from the project folder to the `static` directory.
+
 ### Development Mode
 
 To start the development server and watch for changes:
