@@ -165,17 +165,16 @@ function getProjectPath(...pathes: string[]) {
 }
 
 async function saveStyles(stylesContent: string) {
-    await createFolders(getProjectPath(configs.stylesFolder));
-    await Bun.write(
-        getProjectPath(configs.stylesFolder, configs.defaultStylesFile),
-        stylesContent
-    );
+    const { folder, defaultFile } = configs.styles;
+
+    await createFolders(getProjectPath(folder));
+    await Bun.write(getProjectPath(folder, defaultFile), stylesContent);
 }
 
 async function saveScripts(scriptsContent: string) {
-    await createFolders(getProjectPath(configs.scriptsFolder));
+    await createFolders(getProjectPath(configs.scripts.folder));
     await Bun.write(
-        getProjectPath(configs.scriptsFolder, configs.defaultScriptsFile),
+        getProjectPath(configs.scripts.folder, configs.scripts.defaultFile),
         scriptsContent
     );
 }

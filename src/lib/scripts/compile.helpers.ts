@@ -215,3 +215,27 @@ export async function openStoryData() {
 
     return jsonData;
 }
+
+export async function getEntryFilePath(
+    folderToSearch: string,
+    entryName: string,
+    extensions: Readonly<string[]>
+) {
+    const files = await fs.promises.readdir(folderToSearch, {
+        withFileTypes: true,
+    });
+    const entryFile = files.find((file) => {
+        return (
+            file.isFile() &&
+            extensions.map((ext) => `${entryName}.${ext}`).includes(file.name)
+        );
+    });
+
+    if (!entryFile) {
+        throw new Error(
+            `Entry file '${entryName}.${extensions[0]}' not found in '${folderToSearch}'`
+        );
+    }
+
+    return path.join(folderToSearch, entryFile.name);
+}

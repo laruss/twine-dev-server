@@ -179,3 +179,4 @@ dist
 index.html
 src/static
 src/story
+.js_build

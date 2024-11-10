@@ -15,7 +15,8 @@ For now supports only *SugarCube* format.
     - [Build Mode](#build-mode)
 - [Project Structure](#project-structure)
     - [Passages](#passages)
-    - [Scripts and Styles](#scripts-and-styles)
+    - [Project Scripts](#project-scripts)
+    - [Project Styles](#project-styles)
 - [Scripts](#scripts)
 - [License](#license)
 - [Author](#author)
@@ -129,12 +130,12 @@ my_super_name.md
 another_passage.md
 ...
 scripts/
-script1.js
-script2.js
+---| index.js
+---| script.js
 ...
 styles/
-style1.css
-style2.css
+---| style1.css
+---| style2.css
 ...
 _project.json
 ```
@@ -185,11 +186,45 @@ You can remove all data from the top of the file if you want, it will still work
 Leave pid though if this passage is the `start` passage;
 ```
 
-### Scripts and Styles
+### Project Scripts
 
-- Scripts and styles can be split across multiple files.
-- During compilation, all scripts and styles will be combined into single files.
+- Scripts can be split across multiple files, but have one main entry point, that should have other scripts imported.
+- During compilation, all scripts will be combined into a single file.
 - Scripts are located in `src/story/scripts/`.
+
+Script files support ES6 syntax and import/export statements.
+Also index.js can be renamed to index.ts to enable TypeScript support.
+To install external libraries, you can use `bun add <package-name>` command.
+For more information, see the [Bun documentation](https://bun.sh/docs/).
+
+**Example:**
+
+```text
+scripts/
+---| index.js
+---| script.js
+```
+
+`index.js`:
+
+```javascript
+import { myFunction } from './script.js';
+
+myFunction();
+```
+
+`script.js`:
+
+```javascript
+export function myFunction() {
+    console.log('Hello from myFunction');
+}
+```
+
+### Project Styles
+
+- Styles can be split across multiple files.
+- During compilation, all styles will be combined into single files.
 - Styles are located in `src/story/styles/`.
 
 ## Scripts
@@ -245,6 +280,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - [ ] Write tests
 - [ ] Add possibility to create empty project
 - [ ] Add easy support for third-party libraries (e.g., React)
-- [ ] Add TypeScript support in scripts
+- [x] Add TypeScript support in scripts
 - [ ] Add support for SCSS and other CSS preprocessors
 - [ ] Add support for other Twine formats

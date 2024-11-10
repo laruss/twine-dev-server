@@ -10,11 +10,13 @@ import type {
 import {
     CLEAR_SESSION_STORAGE_SCRIPT,
     fillInPassageInfo,
+    getEntryFilePath,
     getFileNameWoExtension,
     getFilePathsFromCatalog,
     openStoryData,
     parsePassage,
 } from 'src/lib/scripts/compile.helpers.ts';
+import fs from 'node:fs';
 
 const dom = new jsdom.JSDOM();
 const document = dom.window.document;
@@ -56,12 +58,15 @@ async function createStyles() {
         id: 'twine-user-stylesheet',
         type: 'text/twine-css',
     };
-    const { projectPath, stylesFolder, supportedStyles } = configs;
+    const {
+        projectPath,
+        styles: { supportedExtensions, folder },
+    } = configs;
     let styleContent: string = '';
 
     const allStyles = await getFilePathsFromCatalog(
-        path.join(projectPath, stylesFolder),
-        supportedStyles
+        path.join(projectPath, folder),
+        supportedExtensions
     );
 
     for (const stylePath of allStyles) {
@@ -82,21 +87,30 @@ async function createScripts() {
         id: 'twine-user-script',
         type: 'text/twine-javascript',
     };
-    const { projectPath, scriptsFolder, supportedScripts } = configs;
+    const {
+        projectPath,
+        scripts: { folder, supportedExtensions, entry, outputFolder },
+    } = configs;
     let scriptsContent: string = '';
+    const outdir = outputFolder;
+    const entryFilePath = await getEntryFilePath(
+        path.join(projectPath, folder),
+        entry,
+        supportedExtensions
+    );
 
     scriptsContent += isBuild ? '' : CLEAR_SESSION_STORAGE_SCRIPT;
 
-    const allScripts = await getFilePathsFromCatalog(
-        path.join(projectPath, scriptsFolder),
-        supportedScripts
-    );
+    await Bun.build({
+        entrypoints: [entryFilePath],
+        outdir,
+    });
+    const file = Bun.file(path.join(outdir, 'index.js'));
+    const text = await file.text();
 
-    for (const scriptPath of allScripts) {
-        const file = Bun.file(scriptPath);
-        const text = await file.text();
-        scriptsContent += `${scriptsContent === '' ? '' : '\n'}${text}`;
-    }
+    await fs.promises.rm(outdir, { recursive: true, force: true });
+
+    scriptsContent += text;
 
     const element = createElementWithAttributes('script', scriptAttributes);
     element.innerHTML = scriptsContent;
