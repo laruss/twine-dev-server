@@ -8,7 +8,6 @@ For now supports only *SugarCube* format.
 
 - [Description](#description)
 - [Features](#features)
-- [Installation](#installation)
 - [Usage](#usage)
     - [Getting Started](#getting-started)
     - [Decompiling a Twine Project](#decompiling-a-twine-project)
@@ -41,18 +40,6 @@ format.
 - Supports rearranging and renaming passages.
 - Combine multiple scripts and stylesheets during compilation.
 - Compatible with Twine and SugarCube.
-
-## Installation
-
-Make sure you have [Bun](https://bun.sh/) installed, as this project uses Bun as the runtime.
-
-Clone the repository:
-
-```bash
-git clone https://github.com/laruss/twine-dev-server.git
-cd twine-dev-server
-bun install
-```
 
 ## Usage
 
