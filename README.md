@@ -10,6 +10,7 @@ For now supports only *SugarCube* format.
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+    - [Getting Started](#getting-started)
     - [Decompiling a Twine Project](#decompiling-a-twine-project)
     - [Development Mode](#development-mode)
     - [Build Mode](#build-mode)
