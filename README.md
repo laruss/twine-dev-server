@@ -165,7 +165,9 @@ console.log('from hello', State.variables);
 File `src/story/some_folder/some_passage.md`:
 
 ```markdown
-Hello from `some_passage` in `some_folder`
+Hello from `some_passage` in `some_folder`;
+This passage has no metadata, but it will still work;
+But it can't be a `start` passage without `pid`;
 ```
 
 File `src/story/some_folder/some_other_passage.md`:
@@ -178,8 +180,9 @@ tags:
 position: 725,375
 size: 100,100
 ====================
-This passage has been made in Twine, now it's in markdown
-You can remove all data from the top of the file if you want, it will still work
+This passage has been made in Twine, now it's in markdown;
+You can remove all data from the top of the file if you want, it will still work;
+Leave pid though if this passage is the `start` passage;
 ```
 
 ### Scripts and Styles
