@@ -51,7 +51,6 @@ format.
 
    ```bash
    git clone https://github.com/laruss/twine-dev-server.git
-   cd twine-dev-server
    ```
 
 2. **Install Bun**
