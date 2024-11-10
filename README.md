@@ -217,6 +217,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## TODO
 
 - [ ] Write tests
+- [ ] Add possibility to create empty project
 - [ ] Add easy support for third-party libraries (e.g., React)
 - [ ] Add TypeScript support in scripts
 - [ ] Add support for SCSS and other CSS preprocessors
