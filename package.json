@@ -1,0 +1,33 @@
+{
+  "name": "twinegame",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.14.0",
+    "@types/bun": "^1.1.13",
+    "@types/jsdom": "^21.1.7",
+    "@types/twine-sugarcube": "^2.37.1",
+    "@typescript-eslint/eslint-plugin": "^8.13.0",
+    "@typescript-eslint/parser": "^8.13.0",
+    "concurrently": "^9.1.0",
+    "eslint": "^9.14.0",
+    "prettier": "^3.3.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"bun run src/lib/scripts/watch.ts\" \"bun --watch index.ts\"",
+    "decompile": "bun run src/lib/scripts/decompile.ts",
+    "compile": "bun run src/lib/scripts/compile.ts",
+    "build": "bun run src/lib/scripts/build.ts",
+    "lint": "eslint src/**/*.ts",
+    "pretty": "prettier --write src/**/*.ts"
+  },
+  "dependencies": {
+    "@elysiajs/html": "^1.1.1",
+    "elysia": "^1.1.24",
+    "jsdom": "^25.0.1"
+  }
+}
