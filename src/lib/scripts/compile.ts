@@ -8,14 +8,17 @@ import type {
     TagType,
 } from 'src/lib/scripts/types.ts';
 import {
+    CLEAR_SESSION_STORAGE_SCRIPT,
     fillInPassageInfo,
     getFileNameWoExtension,
-    getFilePathsFromCatalog, openStoryData,
+    getFilePathsFromCatalog,
+    openStoryData,
     parsePassage,
 } from 'src/lib/scripts/compile.helpers.ts';
 
 const dom = new jsdom.JSDOM();
 const document = dom.window.document;
+let isBuild = false;
 
 function createElementWithAttributes(
     elementName: string,
@@ -82,6 +85,8 @@ async function createScripts() {
     const { projectPath, scriptsFolder, supportedScripts } = configs;
     let scriptsContent: string = '';
 
+    scriptsContent += isBuild ? '' : CLEAR_SESSION_STORAGE_SCRIPT;
+
     const allScripts = await getFilePathsFromCatalog(
         path.join(projectPath, scriptsFolder),
         supportedScripts
@@ -125,7 +130,7 @@ const createPassages: CreatePassages = async () => {
         const pidAsInt = Number(passage.pid || 0);
         return pidAsInt > acc ? pidAsInt : acc;
     }, 0);
-    console.log("*** Biggest not-generated pid:", biggestPid, "***\n");
+    console.log('*** Biggest not-generated pid:', biggestPid, '***\n');
 
     const allPositions: [number, number][] = [];
     passagesObjects.forEach((psg) => {
@@ -148,7 +153,10 @@ const createPassages: CreatePassages = async () => {
 
     return [
         passagesObjects.map((psg) => {
-            const { content, ...passageProps } = fillInPassageInfo(psg, compileInfo);
+            const { content, ...passageProps } = fillInPassageInfo(
+                psg,
+                compileInfo
+            );
             const elem = createElementWithAttributes(
                 'tw-passagedata',
                 passageProps
@@ -159,7 +167,7 @@ const createPassages: CreatePassages = async () => {
         }),
         compileInfo,
     ];
-}
+};
 
 async function appendStoryDataToHtmlAndSave(storyDataInDiv: HTMLDivElement) {
     const file = Bun.file(configs.htmlPath);
@@ -200,4 +208,13 @@ export async function compile() {
     console.log(configs.passageFormat.metaDelimiter);
 }
 
-await compile();
+const main = async () => {
+    const args = process.argv.slice(2);
+    if (args.includes('--build')) {
+        isBuild = true;
+    }
+
+    await compile();
+};
+
+await main();

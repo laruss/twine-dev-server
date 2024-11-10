@@ -36,12 +36,15 @@ async function copyStaticFiles() {
 async function copyHtmlFile() {
     const storyData = await openStoryData();
     const file = Bun.file(configs.outputHtmlPath);
-    const outputHtmlPath = path.join(configs.distPath, storyData.name + ".html");
+    const outputHtmlPath = path.join(
+        configs.distPath,
+        storyData.name + '.html'
+    );
     await Bun.write(outputHtmlPath, file);
 }
 
 async function build() {
-    await runCompile();
+    await runCompile(true);
     await createDistFolder();
     await copyStaticFiles();
     await copyHtmlFile();

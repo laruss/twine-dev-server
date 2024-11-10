@@ -13,6 +13,16 @@ type GetFilePathsFromCatalog = (
     fileFormats: Readonly<string[]>
 ) => Promise<string[]>;
 
+export const CLEAR_SESSION_STORAGE_SCRIPT = `
+// ----------------------------------------------
+/* script clears sessionStorage on document load
+ * to prevent the browser from caching the previous state in watch mode  
+*/
+document.body.onload = () => sessionStorage.clear();
+// ----------------------------------------------
+
+`;
+
 export const getFilePathsFromCatalog: GetFilePathsFromCatalog = async (
     catalogPath,
     fileFormats
@@ -186,7 +196,6 @@ export async function openFile(...paths: string[]) {
         process.exit(1);
     }
 }
-
 
 export async function openStoryData() {
     const textData = await openFile(
