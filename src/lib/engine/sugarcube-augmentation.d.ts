@@ -5,6 +5,6 @@ declare module 'twine-sugarcube' {
         [key: string]: Record<string, any>;
     }
     interface SugarCubeSetupObject {
-        [key: string]: Record<string, any>
+        [key: string]: Record<string, any>;
     }
 }

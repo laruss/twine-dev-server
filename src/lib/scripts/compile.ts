@@ -17,6 +17,7 @@ import {
     parsePassage,
 } from 'src/lib/scripts/compile.helpers.ts';
 import fs from 'node:fs';
+import * as process from 'node:process';
 
 const dom = new jsdom.JSDOM();
 const document = dom.window.document;
@@ -101,10 +102,19 @@ async function createScripts() {
 
     scriptsContent += isBuild ? '' : CLEAR_SESSION_STORAGE_SCRIPT;
 
-    await Bun.build({
+    const result = await Bun.build({
         entrypoints: [entryFilePath],
         outdir,
     });
+
+    if (!result.success) {
+        console.error('Build failed');
+        for (const error of result.logs) {
+            console.error(error);
+        }
+        process.exit(1);
+    }
+
     const file = Bun.file(path.join(outdir, 'index.js'));
     const text = await file.text();
 
