@@ -137,10 +137,13 @@ const createPassages: CreatePassages = async () => {
         return divEl.innerHTML;
     };
 
-    const { projectPath } = configs;
+    const { projectPath, passageExtensions } = configs;
     const passagesObjects: OptionalPassageType[] = [];
 
-    const allPassages = await getFilePathsFromCatalog(projectPath, ['md']);
+    const allPassages = await getFilePathsFromCatalog(
+        projectPath,
+        passageExtensions
+    );
 
     for (const passagePath of allPassages) {
         const file = Bun.file(passagePath);

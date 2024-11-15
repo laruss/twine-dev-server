@@ -31,8 +31,9 @@ to make changes and view them in real-time. To get started, you need to run the 
 project where your static files are located. The script will parse all the files and create two subfolders in the `src`
 directory: `static` and `story`. The `static` folder will contain everything unrelated to the HTML file, while the
 `story` folder will contain the passages, a `scripts` directory for project scripts, a `styles` directory for
-stylesheets, and a `_project.json` file that holds the main project information. Passages are stored in Markdown (`.md`)
-format.
+stylesheets, and a `_project.json` file that holds the main project information. 
+Passages by default are stored in Markdown (`.md`) format. You can use other formats, if you want. 
+Configure it in the `src/lib/scripts/configs.ts' file.
 
 ## Features
 

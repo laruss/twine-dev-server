@@ -12,6 +12,7 @@ export const configs = {
         entry: 'index',
         outputFolder: '.js_build',
     },
+    passageExtensions: ['md', 'html'],
     passageDataComment: '<!--tw-passagedata-->',
     projectPath: 'src/story', // here will be all parsed passages
     staticPath: 'src/static', // here will be all static files (images, sounds, etc.)
