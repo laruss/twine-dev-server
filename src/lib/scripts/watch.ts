@@ -25,4 +25,5 @@ process.on('SIGINT', () => {
     process.exit(0);
 });
 
+await runCompile();
 console.log(`Watching ${srcPath} for changes...`);
