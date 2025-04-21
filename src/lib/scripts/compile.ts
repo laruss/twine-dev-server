@@ -198,13 +198,19 @@ const createPassages: CreatePassages = async () => {
 
 async function appendStoryDataToHtmlAndSave(storyDataInDiv: HTMLDivElement) {
     const file = Bun.file(configs.htmlPath);
-    const fileData = await file.text();
-    const htmlContent = fileData.replace(
-        configs.passageDataComment,
-        storyDataInDiv.innerHTML
-    );
+    try {
+        const fileData = await file.text();
 
-    await Bun.write(configs.outputHtmlPath, htmlContent);
+        const htmlContent = fileData.replace(
+            configs.passageDataComment,
+            storyDataInDiv.innerHTML
+        );
+
+        await Bun.write(configs.outputHtmlPath, htmlContent);
+    } catch (e) {
+        console.error('Error while writing HTML file:', (e as Error).message);
+        throw e;
+    }
 }
 
 export async function compile() {
